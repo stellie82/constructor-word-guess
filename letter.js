@@ -9,25 +9,30 @@ var inquirer = require("inquirer");
 var fs = require("fs");
 
 
+// var userInput = process.argv[2];
 var validLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var userInput = process.argv[2];
 var guessedLetter = ["H"];
 var guessed = false;
 
 // WORD
 var movies = [
     "The Wave",
-    "Armageddon",
+    "The Impossible",
+    "The Perfect Storm",
     "San Andreas",
     "The Day After Tomorrow",
-    "Titanic",
+    "Dantes Peak",
     "Contagion",
     "Twister"
 ];
 
 var movieArray;
 var randomMovie = movies[Math.floor(Math.random() * movies.length)];
-var guessesArray = [];
+
+// List states to check for each letter.
+var isValid = false;
+var correctMatch = false;
+var alreadyGuessed = false;
 
 function parseMovie(word) {
     movieArray = [];
@@ -41,7 +46,6 @@ function parseMovie(word) {
     console.log(movieArray.join(" "));
 }
 
-
 inquirer
     .prompt([
         {
@@ -50,10 +54,18 @@ inquirer
         }
     ])
     .then(function (response) {
-        if (response) {
-            console.log("\nYou guessed the letter: " + response.letter.toUpperCase());
+        for (i = 0; i < validLetters.length; i++) {
+            if (response.letter.toUpperCase() === validLetters.charAt(i)) {
+                isValid = true;
+                console.log("\nYou guessed the letter: " + response.letter.toUpperCase());
+            } else {
+                return console.log("That is not a valid letter");
+            }
         }
-        else {
-            console.log("\nSomething else\n");
-        }
+        // add in check for already guessed letters
     });
+
+
+
+
+    // module.exports = movieArray;
