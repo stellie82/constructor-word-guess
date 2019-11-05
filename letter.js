@@ -11,40 +11,41 @@ var fs = require("fs");
 
 // var userInput = process.argv[2];
 var validLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var guessedLetter = ["H"];
-var guessed = false;
+// var guessedLetter = ["H"];
+// var guessed = false;
 
-// WORD
-var movies = [
-    "The Wave",
-    "The Impossible",
-    "The Perfect Storm",
-    "San Andreas",
-    "The Day After Tomorrow",
-    "Dantes Peak",
-    "Contagion",
-    "Twister"
-];
+// // WORD
+// var movies = [
+//     "The Wave",
+//     "The Impossible",
+//     "The Perfect Storm",
+//     "San Andreas",
+//     "The Day After Tomorrow",
+//     "Dantes Peak",
+//     "Contagion",
+//     "Twister"
+// ];
 
-var movieArray;
-var randomMovie = movies[Math.floor(Math.random() * movies.length)];
+// var movieArray;
+// var randomMovie = movies[Math.floor(Math.random() * movies.length)];
 
-// List states to check for each letter.
-var isValid = false;
-var correctMatch = false;
-var alreadyGuessed = false;
+// // List states to check for each letter.
+// // var isValid = false;
+// // var correctMatch = false;
+// // var alreadyGuessed = false;
 
-function parseMovie(word) {
-    movieArray = [];
-    for (i = 0; i < word.length; i++) {
-        if (word[i] != " ") {
-            movieArray.push("__");
-        } else if (word[i] === " ") {
-            movieArray.push(" ");
-        }
-    }
-    console.log(movieArray.join(" "));
-}
+// function parseMovie(word) {
+//     movieArray = [];
+//     for (i = 0; i < word.length; i++) {
+//         if (word[i] != " ") {
+//             movieArray.push("_");
+//         } else if (word[i] === " ") {
+//             movieArray.push(" ");
+//         }
+//     }
+//     console.log(randomMovie);
+//     console.log(movieArray.join(" "));
+// }
 
 inquirer
     .prompt([
@@ -54,18 +55,38 @@ inquirer
         }
     ])
     .then(function (response) {
+        var isValid = false;
         for (i = 0; i < validLetters.length; i++) {
             if (response.letter.toUpperCase() === validLetters.charAt(i)) {
                 isValid = true;
-                console.log("\nYou guessed the letter: " + response.letter.toUpperCase());
-            } else {
-                return console.log("That is not a valid letter");
             }
         }
-        // add in check for already guessed letters
+
+        if (isValid) {
+            console.log("\nYou guessed the letter: " + response.letter.toUpperCase());
+        }  else {
+            console.log("That is not a valid letter");
+        }
     });
 
 
+var message = "";
 
+function mainloop(response) {
+    var again = true;
+    if (response) {
+        console.log("Main Loop: " + message + " (" + response.letter + ")");
+        if (response.letter === 'q') {
+            again = false;
+        } else {
+            message += response.letter;
+        }
+    }
+    if (again) {
+        inquirer.prompt([{name: "letter", message: "Blah>"}]).then(mainloop);
+    }
+}
+
+mainloop(null);
 
     // module.exports = movieArray;

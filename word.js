@@ -10,7 +10,23 @@
 
 
 
-
+inquirer
+    .prompt([
+        {
+            name: "letter",
+            message: "Guess a letter!"
+        }
+    ])
+    .then(function (response) {
+        for (i = 0; i < validLetters.length; i++) {
+            if (response.letter.toUpperCase() === validLetters.charAt(i)) {
+                isValid = true;
+                console.log("\nYou guessed the letter: " + response.letter.toUpperCase());
+            } else {
+                return console.log("That is not a valid letter");
+            }
+        }
+    });
 
 
 
